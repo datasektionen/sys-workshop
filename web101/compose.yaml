@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    develop:
+      watch:
+        - path: ./go.*
+          action: rebuild
+        - path: main.go
+          action: rebuild
+        - path: index.html
+          action: rebuild
+        - path: style.css
+          action: sync
+          target: /style.css
+
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: web
+      POSTGRES_PASSWORD: web
+      POSTGRES_DB: web
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "sh -c 'pg_isready -d web -U web'"
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
