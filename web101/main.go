@@ -20,17 +20,17 @@ type Service struct {
 func main() {
 	db, err := pgxpool.New(context.Background(), "postgresql://web:web@db:5432/web")
 	if err != nil {
-		slog.Error("Failed to connect to database:", err)
+		slog.Error("Failed to connect to database", "error", err)
 	}
 	if _, err := db.Exec(context.Background(), `
 		CREATE TABLE IF NOT EXISTS todos (id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, item TEXT NOT NULL)
 	`); err != nil {
-		slog.Error("Failed to create tables:", err)
+		slog.Error("Failed to create tables", "error", err)
 	}
 
 	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
-		slog.Error("Failed to parse templates:", err)
+		slog.Error("Failed to parse templates", "error", err)
 	}
 
 	ctx := context.Background()
@@ -78,17 +78,17 @@ func (s *Service) index(w http.ResponseWriter, r *http.Request) {
 
 func (s *Service) add(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
-		slog.Error("Failed to parse form:", err)
+		slog.Error("Failed to parse form", "error", err)
 		http.Error(w, "Failed to parse form", http.StatusBadRequest)
 		return
 	}
 
 	item := r.FormValue("item")
 
-	slog.Info("adding item: %s", item)
+	slog.Info("adding", "item", item)
 
 	if err := addTodo(s.db, s.ctx, item); err != nil {
-		slog.Error("Failed to add todo item:", err)
+		slog.Error("Failed to add todo item", "error", err)
 		http.Error(w, "Failed to add todo item", http.StatusInternalServerError)
 		return
 	}
@@ -100,13 +100,13 @@ func (s *Service) remove(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
-		slog.Error("Failed to porse price:", err)
+		slog.Error("Failed to porse price", "error", err)
 		http.Error(w, "Invalid id", http.StatusBadRequest)
 		return
 	}
 
 	if err := removeTodo(s.db, s.ctx, id); err != nil {
-		slog.Error("Failed to remove item:", err)
+		slog.Error("Failed to remove item", "error", err)
 		http.Error(w, "Failed to remove item", http.StatusInternalServerError)
 		return
 	}
@@ -132,7 +132,7 @@ func getTodos(db *pgxpool.Pool, ctx context.Context) ([]TodoItem, error) {
 	for todoRows.Next() {
 		var todo TodoItem
 		if err := todoRows.Scan(&todo.ID, &todo.Item); err != nil {
-			slog.Error("Failed to scan todo item:", err)
+			slog.Error("Failed to scan todo item", "error", err)
 			continue
 		}
 		todos = append(todos, todo)
