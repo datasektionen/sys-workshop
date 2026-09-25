@@ -7,3 +7,9 @@ To perform the exercise it's recommended to use docker compose. https://docs.doc
 ## Assignment
 
 Change the file `main.go` and change all instances of `TODO`
+
+## Development
+
+Run with automatic rebuild on change
+
+`docker compose up --watch`

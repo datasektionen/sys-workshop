@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="http://localhost:8080/style.css" />
+        <title>ToDo</title>
+        <link rel="stylesheet" href="/style.css" />
     </head>
+
     <body>
+        <h1>ToDo List</h1>
+        <ul>
+            {{ range .Items }}
+            <li>{{.Item}} <form method="post" action="/todo/{{.ID}}"><input type="submit" value="delete"/></form></li>
+            {{ end }}
+        </ul>
+
+        <form method="post" action="/todo">
+            <label for="item">Item:</label>
+            <input name="item" />
+            <input type="submit" value="Add" />
+        </form>
     </body>
 </html>
-

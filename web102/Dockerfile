@@ -7,7 +7,7 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
     go mod download -x
 
 COPY main.go .
-COPY style.css .
+COPY pico.min.css .
 COPY index.html .
 
 RUN --mount=type=cache,target=/go/pkg/mod/ \

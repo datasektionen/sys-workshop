@@ -45,7 +45,7 @@ func main() {
 
 	// Set up routes
 	http.HandleFunc("GET /style.css", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "style.css")
+		http.ServeFile(w, r, "pico.min.css")
 	})
 	http.HandleFunc("GET /", s.index)
 	http.HandleFunc("POST /todo", s.add)

@@ -14,7 +14,7 @@ services:
           action: rebuild
         - path: index.html
           action: rebuild
-        - path: style.css
+        - path: pico.min.css
           action: sync
           target: /style.css
 
