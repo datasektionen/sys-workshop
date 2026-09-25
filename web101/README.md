@@ -1,21 +1,31 @@
-# Övning
+# Exercise
 
-## Förberedelser
+## Preperation
 
-För att genomföra övningen rekommenderas det att du har docker och docker compose installerat. https://docs.docker.com/compose/install/
+To perform the exercise it's recommended to use docker compose. https://docs.docker.com/compose/install/
 
-## Uppgift
+## Assignment
 
-Ändra filerna index.html och style.css
+Change the files `index.html` and `style.css`
 
-Du ska skapa en sida som visar en lista av todo punkter
+You're supposed to create a page that shows a list of todo items.
 
-Du kan skapa ett nytt föremål genom att posta ett form till '/todo' med ett text fält med namn 'item'
-Du kan tabort ett föremål genom att posta ett form till '/todo/:id', där id är föremålets id
+You can create a new item by submiting a form to `/todo` using the post method.
+The form needs to contain an input with the name `item`.
 
-Du kan få ut datan i index.html genom att skriva
+You can remove an item by submiting a form to `/todo/{id}`, where `{id}` is the id of the item.
+
+You can get the list of items in `index.html` by using the following syntax (go html/template)
 
 {{ range .Items }}
-    {{.Item}} // Ger text innehållet av punkten
-    {{.ID}} // Ger punktens id
+    {{.Item}} 
+    {{.ID}}
 {{ end }}
+
+Where `.Item` is the thing entered and `.ID` is a unique id for each item
+
+## Development
+
+Run with automatic rebuild on change
+
+`docker compose up --watch`
